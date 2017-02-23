@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoloWorldAnchors", "HoloWorldAnchors.csproj", "{952E58D1-315D-7E96-B7A8-7D4EA0E6B357}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoloWorldAnchors.Editor", "HoloWorldAnchors.Editor.csproj", "{B9791361-2D49-12F5-AF70-C9EB7E432A70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{952E58D1-315D-7E96-B7A8-7D4EA0E6B357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952E58D1-315D-7E96-B7A8-7D4EA0E6B357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952E58D1-315D-7E96-B7A8-7D4EA0E6B357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952E58D1-315D-7E96-B7A8-7D4EA0E6B357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9791361-2D49-12F5-AF70-C9EB7E432A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9791361-2D49-12F5-AF70-C9EB7E432A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9791361-2D49-12F5-AF70-C9EB7E432A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9791361-2D49-12F5-AF70-C9EB7E432A70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
