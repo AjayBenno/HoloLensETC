@@ -116,6 +116,11 @@ public class AnchorControl : MonoBehaviour
         curentState = ControlState.PlaceAnchor;
     }
 
+    public void ClearText()
+    {
+        DisplayUI.Instance.ClearText();
+    }
+
     public void Restart()
     {
         SceneManager.LoadScene("AnchorSharing");

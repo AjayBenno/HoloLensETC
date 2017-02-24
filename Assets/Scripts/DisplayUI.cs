@@ -17,4 +17,8 @@ public class DisplayUI : Singleton<DisplayUI>
     {
         DisplayText.text += msg + "\n";
     }
+    public void ClearText()
+    {
+        DisplayText.text = "";
+    }
 }
