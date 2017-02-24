@@ -61,7 +61,7 @@ public class AnchorControl : MonoBehaviour
     {
         switch (curentState)
         {            
-            case ControlState.CheckAnchorStatus:
+            case ControlState.CheckAnchorStatus: //Checking anchor status?
                 var cnt = anchorStore.anchorCount;                
                 if (cnt > 0)
                 {
