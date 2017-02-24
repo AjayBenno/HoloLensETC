@@ -19,7 +19,8 @@ public class AnchorControl : MonoBehaviour
         WaitingForAnchorStore,
         CheckAnchorStatus,
         Ready,
-        PlaceAnchor
+        PlaceAnchor,
+        ShowCoordinates
     }
 
     private ControlState curentState;
@@ -101,11 +102,22 @@ public class AnchorControl : MonoBehaviour
                     //this.transform.rotation = toQuat;
                 }
                 break;
+            case ControlState.ShowCoordinates:
+                //Display Coordinates:
+                Vector3 anchorPos = PlacementObject.transform.position;
+                Vector3 cameraPos = Camera.main.transform.position;
+                Vector3 worldPos = cameraPos - anchorPos;
+
+                string placeCoords = getCoords(worldPos);
+
+                DisplayUI.Instance.SetText(placeCoords);
+                break;
         }
     }
 
     public void PlaceAnchor()
     {
+        //possibly refactor this if we have too many states?
         if (curentState != ControlState.Ready)
         {
             ttsMgr.SpeakText("AnchorStore Not Ready");
@@ -118,11 +130,13 @@ public class AnchorControl : MonoBehaviour
 
     public void ClearText()
     {
+        ttsMgr.SpeakText("Clearing Text");
         DisplayUI.Instance.ClearText();
     }
 
     public void Restart()
     {
+        ttsMgr.SpeakText("Restarting World");
         SceneManager.LoadScene("AnchorSharing");
     }
 
@@ -133,10 +147,23 @@ public class AnchorControl : MonoBehaviour
             ttsMgr.SpeakText("Not in Anchor Placement State");
             return;
         }
-        
         // Add world anchor when object placement is done.
         anchorManager.AttachAnchor(PlacementObject, SavedAnchorFriendlyName);
         curentState = ControlState.Ready;
         ttsMgr.SpeakText("Anchor Placed");
     }
+
+    public void ShowCoordinates()
+    {
+        ttsMgr.SpeakText("Displaying Coordinates");
+        curentState = ControlState.ShowCoordinates;
+    }
+
+    string getCoords(Vector3 position)
+    {
+        //position.x;
+        string newString = "x: " + position.x.ToString() + " y: " + position.y.ToString() + " z: " + position.z.ToString();
+        return newString;
+    }
+    
 }
