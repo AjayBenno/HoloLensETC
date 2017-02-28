@@ -21,4 +21,8 @@ public class DisplayUI : Singleton<DisplayUI>
     {
         DisplayText.text = "";
     }
+    public void SetText(string msg)
+    {
+        DisplayText.text = msg;
+    }
 }
