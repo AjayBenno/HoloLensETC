@@ -19,8 +19,7 @@ public class AnchorControl : MonoBehaviour
         WaitingForAnchorStore,
         CheckAnchorStatus,
         Ready,
-        PlaceAnchor,
-        ShowCoordinates
+        PlaceAnchor
     }
 
     private ControlState curentState;
@@ -102,16 +101,17 @@ public class AnchorControl : MonoBehaviour
                     //this.transform.rotation = toQuat;
                 }
                 break;
-            case ControlState.ShowCoordinates:
+            //case ControlState.ShowCoordinates:
                 //Display Coordinates:
-                Vector3 anchorPos = PlacementObject.transform.position;
-                Vector3 cameraPos = Camera.main.transform.position;
-                Vector3 worldPos = cameraPos - anchorPos;
+                //Vector3 anchorPos = PlacementObject.transform.position;
+                //Vector3 cameraPos = Camera.main.transform.position;
+                //Vector3 worldPos = cameraPos - anchorPos;
 
-                string placeCoords = getCoords(worldPos);
+                //string placeCoords = getCoords(worldPos);
+                //string placeCoords = getCoords(new Vector3());
 
-                DisplayUI.Instance.SetText(placeCoords);
-                break;
+               // DisplayUI.Instance.SetText(placeCoords);
+               // break;
         }
     }
 
@@ -156,7 +156,7 @@ public class AnchorControl : MonoBehaviour
     public void ShowCoordinates()
     {
         ttsMgr.SpeakText("Displaying Coordinates");
-        curentState = ControlState.ShowCoordinates;
+        //curentState = ControlState.ShowCoordinates;
     }
 
     string getCoords(Vector3 position)
