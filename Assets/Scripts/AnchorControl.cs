@@ -19,15 +19,16 @@ public class AnchorControl : MonoBehaviour
         WaitingForAnchorStore,
         CheckAnchorStatus,
         Ready,
-        PlaceAnchor
+        PlaceAnchor,
+        ShowCoordinates
     }
 
-    private ControlState curentState;
+    private ControlState currentState;
 
     // Use this for initialization
     void Start()
     {
-        curentState = ControlState.WaitingForAnchorStore;
+        currentState = ControlState.WaitingForAnchorStore;
 
         ttsMgr = GetComponent<TextToSpeechManager>();
         if (ttsMgr == null)
@@ -53,13 +54,13 @@ public class AnchorControl : MonoBehaviour
     void AnchorStoreReady(WorldAnchorStore store)
     {
         anchorStore = store;
-        curentState = ControlState.CheckAnchorStatus;
+        currentState = ControlState.CheckAnchorStatus;
         Debug.Log("Anchor Store Ready");        
     }
     
     void Update()
     {
-        switch (curentState)
+        switch (currentState)
         {            
             case ControlState.CheckAnchorStatus: //Checking anchor status?
                 var cnt = anchorStore.anchorCount;                
@@ -80,7 +81,7 @@ public class AnchorControl : MonoBehaviour
                     Debug.Log("No Anchors Found, Creating Anchor");
                 }                
                 anchorManager.AttachAnchor(PlacementObject, SavedAnchorFriendlyName);
-                curentState = ControlState.Ready;
+                currentState = ControlState.Ready;
                 break;
             case ControlState.Ready:
                 break;
@@ -101,31 +102,35 @@ public class AnchorControl : MonoBehaviour
                     //this.transform.rotation = toQuat;
                 }
                 break;
-            //case ControlState.ShowCoordinates:
+            case ControlState.ShowCoordinates:
                 //Display Coordinates:
-                //Vector3 anchorPos = PlacementObject.transform.position;
-                //Vector3 cameraPos = Camera.main.transform.position;
-                //Vector3 worldPos = cameraPos - anchorPos;
+                Vector3 anchorPos = PlacementObject.transform.position;
+                Vector3 cameraPos = Camera.main.transform.position;
+                Vector3 worldPos = cameraPos - anchorPos;
 
-                //string placeCoords = getCoords(worldPos);
-                //string placeCoords = getCoords(new Vector3());
+                string placeCoords = getCoords(worldPos);
 
-               // DisplayUI.Instance.SetText(placeCoords);
-               // break;
+                DisplayUI.Instance.SetText(placeCoords);
+                break;
         }
     }
 
     public void PlaceAnchor()
     {
         //possibly refactor this if we have too many states?
-        if (curentState != ControlState.Ready)
+        if (currentState != ControlState.Ready)
         {
             ttsMgr.SpeakText("AnchorStore Not Ready");
             return;
+        } else if (currentState == ControlState.ShowCoordinates)
+        {
+            currentState = ControlState.Ready;
         }
+
+           
         
         anchorManager.RemoveAnchor(PlacementObject);
-        curentState = ControlState.PlaceAnchor;
+        currentState = ControlState.PlaceAnchor;
     }
 
     public void ClearText()
@@ -136,27 +141,26 @@ public class AnchorControl : MonoBehaviour
 
     public void Restart()
     {
-        ttsMgr.SpeakText("Restarting World");
         SceneManager.LoadScene("AnchorSharing");
     }
 
     public void LockAnchor()
     {
-        if (curentState != ControlState.PlaceAnchor)
+        if (currentState != ControlState.PlaceAnchor)
         {
             ttsMgr.SpeakText("Not in Anchor Placement State");
             return;
         }
         // Add world anchor when object placement is done.
         anchorManager.AttachAnchor(PlacementObject, SavedAnchorFriendlyName);
-        curentState = ControlState.Ready;
+        currentState = ControlState.Ready;
         ttsMgr.SpeakText("Anchor Placed");
     }
 
     public void ShowCoordinates()
     {
         ttsMgr.SpeakText("Displaying Coordinates");
-        //curentState = ControlState.ShowCoordinates;
+        currentState = ControlState.ShowCoordinates;
     }
 
     string getCoords(Vector3 position)
