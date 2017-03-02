@@ -190,7 +190,7 @@ public class AnchorControl : MonoBehaviour
 
     public void LockAnchor()
     {
-        if (currentState != ControlState.PlaceAnchor || currentState != ControlState.Stop)
+        if (currentState != ControlState.PlaceAnchor && currentState != ControlState.Stop)
         {
             ttsMgr.SpeakText("Not in Anchor Placement State");
             return;
@@ -226,6 +226,8 @@ public class AnchorControl : MonoBehaviour
         if (currentState != ControlState.Stop)
         {
             ttsMgr.SpeakText("Call Place anchor first");
+            return;
+
         }
         currentState = ControlState.Nudge;
         nudgeState = NudgeState.Forward;
@@ -235,6 +237,7 @@ public class AnchorControl : MonoBehaviour
         if (currentState != ControlState.Stop)
         {
             ttsMgr.SpeakText("Call Place anchor first");
+            return;
         }
         currentState = ControlState.Nudge;
         nudgeState = NudgeState.Back;
@@ -244,6 +247,7 @@ public class AnchorControl : MonoBehaviour
         if (currentState != ControlState.Stop)
         {
             ttsMgr.SpeakText("Call Place anchor first");
+            return;
         }
         currentState = ControlState.Nudge;
         nudgeState = NudgeState.Left;
@@ -253,6 +257,7 @@ public class AnchorControl : MonoBehaviour
         if (currentState != ControlState.Stop)
         {
             ttsMgr.SpeakText("Call Place anchor first");
+            return;
         }
         currentState = ControlState.Nudge;
         nudgeState = NudgeState.Right;
@@ -262,6 +267,7 @@ public class AnchorControl : MonoBehaviour
         if (currentState != ControlState.Ready)
         {
             ttsMgr.SpeakText("Say Stop first");
+            return;
         }
         currentState = ControlState.Nudge;
         nudgeState = NudgeState.Up;
@@ -271,6 +277,7 @@ public class AnchorControl : MonoBehaviour
         if (currentState != ControlState.Stop)
         {
             ttsMgr.SpeakText("Say Stop first");
+            return;
         }
         currentState = ControlState.Nudge;
         nudgeState = NudgeState.Down;
@@ -280,16 +287,18 @@ public class AnchorControl : MonoBehaviour
         if (currentState != ControlState.Stop)
         {
             ttsMgr.SpeakText("Say Stop first");
+            return;
         }
         currentState = ControlState.Nudge;
         nudgeState = NudgeState.Rotate;
     }
     public void Stop()
     {
-        if(currentState != ControlState.PlaceAnchor || 
+        if(currentState != ControlState.PlaceAnchor && 
            currentState != ControlState.Nudge)
         {
             ttsMgr.SpeakText("Nothing to stop");
+            return;
         }
         currentState = ControlState.Stop;
     }
