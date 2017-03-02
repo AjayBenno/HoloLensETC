@@ -126,7 +126,7 @@ public class AnchorControl : MonoBehaviour
                 string placeCoords = getCoords(worldPos);
                 string vectorAngleInfo = getVectorAngle();
 
-                DisplayUI.Instance.SetText(placeCoords);
+                DisplayUI.Instance.SetText(vectorAngleInfo);
                 break;
             case ControlState.Nudge:
                
