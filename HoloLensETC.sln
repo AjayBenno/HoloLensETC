@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoloLensETC", "HoloLensETC.csproj", "{426A8A29-3422-5480-6EA4-6D75F6518ABC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HololensETC", "HololensETC.csproj", "{12AA479F-6298-245B-F22B-6161E8B00141}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoloLensETC.Editor", "HoloLensETC.Editor.csproj", "{5184EB85-5DD4-79FA-61CF-B7C486215633}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HololensETC.Editor", "HololensETC.Editor.csproj", "{6E2FF002-2572-43D0-063B-5F777FE7EE97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,14 +11,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{426A8A29-3422-5480-6EA4-6D75F6518ABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{426A8A29-3422-5480-6EA4-6D75F6518ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{426A8A29-3422-5480-6EA4-6D75F6518ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{426A8A29-3422-5480-6EA4-6D75F6518ABC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5184EB85-5DD4-79FA-61CF-B7C486215633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5184EB85-5DD4-79FA-61CF-B7C486215633}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5184EB85-5DD4-79FA-61CF-B7C486215633}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5184EB85-5DD4-79FA-61CF-B7C486215633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12AA479F-6298-245B-F22B-6161E8B00141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12AA479F-6298-245B-F22B-6161E8B00141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12AA479F-6298-245B-F22B-6161E8B00141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12AA479F-6298-245B-F22B-6161E8B00141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E2FF002-2572-43D0-063B-5F777FE7EE97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E2FF002-2572-43D0-063B-5F777FE7EE97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E2FF002-2572-43D0-063B-5F777FE7EE97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E2FF002-2572-43D0-063B-5F777FE7EE97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
