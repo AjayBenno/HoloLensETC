@@ -122,12 +122,11 @@ public class AnchorControl : MonoBehaviour
         {
             ttsMgr.SpeakText("AnchorStore Not Ready");
             return;
-        } else if (currentState == ControlState.ShowCoordinates)
-        {
-            currentState = ControlState.Ready;
         }
-
-           
+        //else if (currentState == ControlState.ShowCoordinates)
+        //{
+        //   currentState = ControlState.Ready;
+        //}
         
         anchorManager.RemoveAnchor(PlacementObject);
         currentState = ControlState.PlaceAnchor;
