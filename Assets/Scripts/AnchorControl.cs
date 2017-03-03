@@ -12,6 +12,7 @@ public class AnchorControl : MonoBehaviour
 
     public GameObject PlacementObject;
     public GameObject AnchorAxis;
+    public GameObject Console;
 
     public string SavedAnchorFriendlyName;
     private WorldAnchorManager anchorManager;
@@ -98,7 +99,7 @@ public class AnchorControl : MonoBehaviour
                     ttsMgr.SpeakText("No Anchors Found, Creating Anchor");
                     Debug.Log("No Anchors Found, Creating Anchor");
                 }                
-                anchorManager.AttachAnchor(PlacementObject, SavedAnchorFriendlyName);
+                anchorManager.AttachAnchor(AnchorAxis, SavedAnchorFriendlyName);
                 currentState = ControlState.Ready;
                 break;
             case ControlState.Ready:
@@ -184,7 +185,7 @@ public class AnchorControl : MonoBehaviour
         //   currentState = ControlState.Ready;
         //}
         
-        anchorManager.RemoveAnchor(PlacementObject);
+        anchorManager.RemoveAnchor(AnchorAxis);
         currentState = ControlState.PlaceAnchor;
     }
 
@@ -209,7 +210,7 @@ public class AnchorControl : MonoBehaviour
             return;
         }
         // Add world anchor when object placement is done.
-        anchorManager.AttachAnchor(PlacementObject, SavedAnchorFriendlyName);
+        anchorManager.AttachAnchor(AnchorAxis, SavedAnchorFriendlyName);
         currentState = ControlState.Ready;
         ttsMgr.SpeakText("Anchor Placed");
     }
@@ -310,6 +311,16 @@ public class AnchorControl : MonoBehaviour
                 nudgeState = NudgeState.RotateLeft;
                 break;
         }
+    }
+
+    public void HideConsole()
+    {
+        Console.SetActive(false);
+    }
+
+    public void ShowConsole()
+    {
+        Console.SetActive(true);
     }
 
     private float getDistance(Vector3 anchorPosition,Vector3 currentPosition)
