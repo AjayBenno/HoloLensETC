@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465785, g: 0.49641252, b: 0.574817, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -343,7 +343,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: Move Left
-    KeyCode: 53
+    KeyCode: 55
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -361,7 +361,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: Move Right
-    KeyCode: 53
+    KeyCode: 56
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -379,7 +379,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: Move Up
-    KeyCode: 53
+    KeyCode: 57
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -397,7 +397,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: Move Down
-    KeyCode: 53
+    KeyCode: 97
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -415,7 +415,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: Stop
-    KeyCode: 53
+    KeyCode: 98
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -433,7 +433,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: Show Coordinates
-    KeyCode: 57
+    KeyCode: 99
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -450,13 +450,67 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-  - Keyword: Rotate
-    KeyCode: 57
+  - Keyword: Rotate Right
+    KeyCode: 100
     Response:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 817041545}
-          m_MethodName: Rotate
+          m_MethodName: RotateRight
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  - Keyword: Rotate Left
+    KeyCode: 101
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 817041545}
+          m_MethodName: RotateLeft
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  - Keyword: Hide Console
+    KeyCode: 102
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 817041545}
+          m_MethodName: HideConsole
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  - Keyword: Show Console
+    KeyCode: 103
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 817041545}
+          m_MethodName: ShowConsole
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -504,7 +558,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deltaAnchorPos: 0.001
+  anchorRotationSpeed: 40
   PlacementObject: {fileID: 840145750}
+  AnchorAxis: {fileID: 1978457292}
+  Console: {fileID: 2033192372}
   SavedAnchorFriendlyName: WorldAnchor1
 --- !u!82 &817041546
 AudioSource:

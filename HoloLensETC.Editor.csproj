@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6E2FF002-2572-43D0-063B-5F777FE7EE97}</ProjectGuid>
+    <ProjectGuid>{5184EB85-5DD4-79FA-61CF-B7C486215633}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -120,9 +120,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="HololensETC.csproj">
-      <Project>{12AA479F-6298-245B-F22B-6161E8B00141}</Project>
-      <Name>HololensETC</Name>
+    <ProjectReference Include="HoloLensETC.csproj">
+      <Project>{426A8A29-3422-5480-6EA4-6D75F6518ABC}</Project>
+      <Name>HoloLensETC</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

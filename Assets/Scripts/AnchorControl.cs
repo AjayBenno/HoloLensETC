@@ -8,7 +8,12 @@ using UnityEngine.SceneManagement;
 public class AnchorControl : MonoBehaviour
 {
     public float deltaAnchorPos;
+    public float anchorRotationSpeed;
+
     public GameObject PlacementObject;
+    public GameObject AnchorAxis;
+    public GameObject Console;
+
     public string SavedAnchorFriendlyName;
     private WorldAnchorManager anchorManager;
     private WorldAnchorStore anchorStore;
@@ -33,7 +38,8 @@ public class AnchorControl : MonoBehaviour
        Right,
        Back,
        Down,
-       Rotate
+       RotateRight,
+       RotateLeft
     }
 
     private ControlState currentState;
@@ -93,7 +99,7 @@ public class AnchorControl : MonoBehaviour
                     ttsMgr.SpeakText("No Anchors Found, Creating Anchor");
                     Debug.Log("No Anchors Found, Creating Anchor");
                 }                
-                anchorManager.AttachAnchor(PlacementObject, SavedAnchorFriendlyName);
+                anchorManager.AttachAnchor(AnchorAxis, SavedAnchorFriendlyName);
                 currentState = ControlState.Ready;
                 break;
             case ControlState.Ready:
@@ -108,54 +114,60 @@ public class AnchorControl : MonoBehaviour
                 if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
                     30.0f, spatialMappingManager.LayerMask))
                 {                    
-                    PlacementObject.transform.position = hitInfo.point;
+                    AnchorAxis.transform.position = hitInfo.point;
 
                     // Rotate this object to face the user.
-                    //Quaternion toQuat = Camera.main.transform.localRotation;
-                    //toQuat.x = 0;
-                    //toQuat.z = 0;
-                    //this.transform.rotation = toQuat;
+                    Quaternion toQuat = Camera.main.transform.localRotation;
+                    toQuat.x = 0;
+                    toQuat.z = 0;
+                    AnchorAxis.transform.rotation = toQuat;
                 }
                 break;
             case ControlState.ShowCoordinates:
                 //Display Coordinates:
-                Vector3 anchorPos = PlacementObject.transform.position;
+                Vector3 anchorPos = AnchorAxis.transform.position;
                 Vector3 cameraPos = Camera.main.transform.position;
                 Vector3 worldPos = cameraPos - anchorPos;
 
                 string placeCoords = getCoords(worldPos);
-                string vectorAngleInfo = getVectorAngle();
-
-                DisplayUI.Instance.SetText(vectorAngleInfo);
+                //string vectorAngleInfo = getVectorAngle();
+                DisplayUI.Instance.SetText(placeCoords);
                 break;
-            case ControlState.Nudge:
-               
+            case ControlState.Nudge:  
                 Vector3 newPosition = PlacementObject.transform.position;
                 switch (nudgeState)
                 {
                     case NudgeState.Back:
-                        newPosition.z -= deltaAnchorPos;
+                        newPosition.x -= deltaAnchorPos;
+                        PlacementObject.transform.position = newPosition;
                         break;
                     case NudgeState.Forward:
-                        newPosition.z += deltaAnchorPos;
+                        newPosition.x += deltaAnchorPos;
+                        PlacementObject.transform.position = newPosition;
                         break;
                     case NudgeState.Left:
-                        newPosition.x -= deltaAnchorPos;
+                        newPosition.z -= deltaAnchorPos;
+                        PlacementObject.transform.position = newPosition;
                         break;
                     case NudgeState.Right:
-                        newPosition.x += deltaAnchorPos;
+                        newPosition.z += deltaAnchorPos;
+                        PlacementObject.transform.position = newPosition;
                         break;
                     case NudgeState.Down:
                         newPosition.y -= deltaAnchorPos;
+                        PlacementObject.transform.position = newPosition;
                         break;
                     case NudgeState.Up:
                         newPosition.y += deltaAnchorPos;
+                        PlacementObject.transform.position = newPosition;
                         break;
-                    case NudgeState.Rotate:
-                        PlacementObject.transform.Rotate(Vector3.up, .001f);
+                    case NudgeState.RotateRight:
+                        //AnchorAxis.transform.Rotate(anchorRotationSpeed * Vector3.up * Time.deltaTime, Space.Self);
+                        break;
+                    case NudgeState.RotateLeft:
+                        //AnchorAxis.transform.Rotate(-1 * anchorRotationSpeed * Vector3.up * Time.deltaTime, Space.Self);
                         break;
                 }
-                PlacementObject.transform.position = newPosition;
                 break;
         }
     }
@@ -163,7 +175,7 @@ public class AnchorControl : MonoBehaviour
     public void PlaceAnchor()
     {
         //possibly refactor this if we have too many states?
-        if (currentState != ControlState.Ready)
+        if (currentState != ControlState.Ready && currentState != ControlState.Stop)
         {
             ttsMgr.SpeakText("AnchorStore Not Ready");
             return;
@@ -173,7 +185,7 @@ public class AnchorControl : MonoBehaviour
         //   currentState = ControlState.Ready;
         //}
         
-        anchorManager.RemoveAnchor(PlacementObject);
+        anchorManager.RemoveAnchor(AnchorAxis);
         currentState = ControlState.PlaceAnchor;
     }
 
@@ -190,13 +202,15 @@ public class AnchorControl : MonoBehaviour
 
     public void LockAnchor()
     {
-        if (currentState != ControlState.PlaceAnchor && currentState != ControlState.Stop)
+        if (currentState != ControlState.PlaceAnchor && 
+            currentState != ControlState.Stop &&
+            currentState != ControlState.ShowCoordinates)
         {
             ttsMgr.SpeakText("Not in Anchor Placement State");
             return;
         }
         // Add world anchor when object placement is done.
-        anchorManager.AttachAnchor(PlacementObject, SavedAnchorFriendlyName);
+        anchorManager.AttachAnchor(AnchorAxis, SavedAnchorFriendlyName);
         currentState = ControlState.Ready;
         ttsMgr.SpeakText("Anchor Placed");
     }
@@ -209,7 +223,6 @@ public class AnchorControl : MonoBehaviour
 
     string getCoords(Vector3 position)
     {
-        //position.x;
         string newString = "x: " + position.x.ToString() + " y: " + position.y.ToString() + " z: " + position.z.ToString();
         return newString;
     }
@@ -223,74 +236,35 @@ public class AnchorControl : MonoBehaviour
     }
     public void NudgeForward()
     {
-        if (currentState != ControlState.Stop)
-        {
-            ttsMgr.SpeakText("Call Place anchor first");
-            return;
-
-        }
-        currentState = ControlState.Nudge;
-        nudgeState = NudgeState.Forward;
+        nudgeController("forward");
     }
     public void NudgeBack()
     {
-        if (currentState != ControlState.Stop)
-        {
-            ttsMgr.SpeakText("Call Place anchor first");
-            return;
-        }
-        currentState = ControlState.Nudge;
-        nudgeState = NudgeState.Back;
+        nudgeController("back");
     }
     public void NudgeLeft()
     {
-        if (currentState != ControlState.Stop)
-        {
-            ttsMgr.SpeakText("Call Place anchor first");
-            return;
-        }
-        currentState = ControlState.Nudge;
-        nudgeState = NudgeState.Left;
+        nudgeController("left");
     }
     public void NudgeRight()
     {
-        if (currentState != ControlState.Stop)
-        {
-            ttsMgr.SpeakText("Call Place anchor first");
-            return;
-        }
-        currentState = ControlState.Nudge;
-        nudgeState = NudgeState.Right;
+        nudgeController("right");
     }
     public void NudgeUp()
     {
-        if (currentState != ControlState.Ready)
-        {
-            ttsMgr.SpeakText("Say Stop first");
-            return;
-        }
-        currentState = ControlState.Nudge;
-        nudgeState = NudgeState.Up;
+        nudgeController("up");
     }
     public void NudgeDown()
     {
-        if (currentState != ControlState.Stop)
-        {
-            ttsMgr.SpeakText("Say Stop first");
-            return;
-        }
-        currentState = ControlState.Nudge;
-        nudgeState = NudgeState.Down;
+        nudgeController("down");
     }
-    public void Rotate()
+    public void RotateRight()
     {
-        if (currentState != ControlState.Stop)
-        {
-            ttsMgr.SpeakText("Say Stop first");
-            return;
-        }
-        currentState = ControlState.Nudge;
-        nudgeState = NudgeState.Rotate;
+        nudgeController("rotate right");
+    }
+    public void RotateLeft()
+    {
+        nudgeController("rotate left");
     }
     public void Stop()
     {
@@ -302,6 +276,52 @@ public class AnchorControl : MonoBehaviour
         }
         currentState = ControlState.Stop;
     }
+    public void nudgeController(string command)
+    {
+        if (currentState != ControlState.Stop)
+        {
+            ttsMgr.SpeakText("Say Stop first");
+            return;
+        }
+        currentState = ControlState.Nudge;
+        switch (command)
+        {
+            case "left":
+                nudgeState = NudgeState.Left;
+                break;
+            case "right":
+                nudgeState = NudgeState.Right;
+                break;
+            case "up":
+                nudgeState = NudgeState.Up;
+                break;
+            case "down":
+                nudgeState = NudgeState.Down;
+                break;
+            case "forward":
+                nudgeState = NudgeState.Forward;
+                break;
+            case "back":
+                nudgeState = NudgeState.Back;
+                break;
+            case "rotate right":
+                nudgeState = NudgeState.RotateRight;
+                break;
+            case "rotate left":
+                nudgeState = NudgeState.RotateLeft;
+                break;
+        }
+    }
+
+    public void HideConsole()
+    {
+        Console.SetActive(false);
+    }
+
+    public void ShowConsole()
+    {
+        Console.SetActive(true);
+    }
 
     private float getDistance(Vector3 anchorPosition,Vector3 currentPosition)
     {
@@ -311,5 +331,4 @@ public class AnchorControl : MonoBehaviour
     {
         return Vector3.Angle(anchorPosition, currentPosition);
     }
-
 }
