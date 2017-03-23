@@ -4,16 +4,20 @@ using System.Text;
 using HoloToolkit.Unity;
 using UnityEngine.VR.WSA.Persistence;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public class AnchorControl : MonoBehaviour
 {
+    public string ipAddress;
+
     public float deltaAnchorPos;
     public float anchorRotationSpeed;
 
-    private readonly double A = -13.2323;
-    private readonly double B = 7.586;
-    private readonly double C = 309.184;
-    private readonly double D = 1025.039;
+    private readonly float A = 7.40725f;
+    private readonly float B = 13.333f;
+    private readonly float C = 235.4985f;
+    private readonly float D = 1025.535f;
 
 
     public GameObject PlacementObject;
@@ -85,6 +89,8 @@ public class AnchorControl : MonoBehaviour
     
     void Update()
     {
+        
+
         switch (currentState)
         {            
             case ControlState.CheckAnchorStatus: //Checking anchor status?
@@ -140,11 +146,15 @@ public class AnchorControl : MonoBehaviour
                 //BEGIN CONVERSION BETWEEN WORLD AND ROS
                 float oldX = worldPos.x;
                 float oldZ = worldPos.z;
-                double newX = A * oldX + B * oldZ + C;
-                double newZ = B * oldX - A * oldZ + D;
-                
+                float newX = A * oldX - B * oldZ + C;
+                float newZ = B * oldX + A * oldZ + D;
+
+                StartCoroutine(setLocation(newX, newZ));
+
+                //StartCoroutine(setLocation(237.25f, 1027.59f));
 
                 string placeCoords = getCoords(worldPos);
+                //string placeCoordsWithRos = placeCoords + "\n ROSx: " + newX.ToString() + " RosZ: " + newZ.ToString();
                 string placeCoordsWithRos = placeCoords + "\n ROSx: " + newX.ToString() + " RosZ: " + newZ.ToString();
                 //string vectorAngleInfo = getVectorAngle();
                 DisplayUI.Instance.SetText(placeCoordsWithRos);
@@ -243,7 +253,7 @@ public class AnchorControl : MonoBehaviour
 
     public void ShowCoordinates()
     {
-        ttsMgr.SpeakText("Displaying Coordinates");
+        ttsMgr.SpeakText("haha relaaaax");
         currentState = ControlState.ShowCoordinates;
     }
 
@@ -356,5 +366,36 @@ public class AnchorControl : MonoBehaviour
     private float getAngle(Vector3 anchorPosition, Vector3 currentPosition)
     {
         return Vector3.Angle(anchorPosition, currentPosition);
+    }
+
+    IEnumerator setLocation(float x, float y)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("x", x.ToString());
+        form.AddField("y", y.ToString());
+
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        formData.Add(new MultipartFormDataSection("x=123&y=456"));
+        //formData.Add(new MultipartFormFileSection("my file data", "myfile.txt"));
+
+
+        string url = "http://" + ipAddress + ":3000/set_holo_pos";
+          
+        UnityWebRequest www = UnityWebRequest.Post(url, form);
+        yield return www.Send();
+
+        Debug.Log(url);
+
+        DisplayUI.Instance.SetText(url);
+
+
+
+        // Post a request to an URL with our custom headers
+       // WWW www = new WWW(url, form);
+        //yield return www;
+
+        //Debug.Log(www.text);
+
+        //DisplayUI.Instance.SetText(www.text);
     }
 }
