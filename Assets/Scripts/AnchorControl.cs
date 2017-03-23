@@ -10,6 +10,12 @@ public class AnchorControl : MonoBehaviour
     public float deltaAnchorPos;
     public float anchorRotationSpeed;
 
+    private readonly double A = -13.2323;
+    private readonly double B = 7.586;
+    private readonly double C = 309.184;
+    private readonly double D = 1025.039;
+
+
     public GameObject PlacementObject;
     public GameObject AnchorAxis;
     public GameObject Console;
@@ -91,8 +97,10 @@ public class AnchorControl : MonoBehaviour
                         sb.Append(ids);
                     }
                     Debug.Log(sb.ToString());
-                    ttsMgr.SpeakText(sb.ToString());
+                    ttsMgr.SpeakText("Anchor Loaded, Connecting to Web Interface");
                     DisplayUI.Instance.AppendText(sb.ToString());
+
+                    //TODO: ControlState.ConnectToWebInterface
                 }
                 else
                 {
@@ -129,29 +137,36 @@ public class AnchorControl : MonoBehaviour
                 Vector3 anchorPos = AnchorAxis.transform.position;
                 Vector3 cameraPos = Camera.main.transform.position;
                 Vector3 worldPos = cameraPos - anchorPos;
+                //BEGIN CONVERSION BETWEEN WORLD AND ROS
+                float oldX = worldPos.x;
+                float oldZ = worldPos.z;
+                double newX = A * oldX + B * oldZ + C;
+                double newZ = B * oldX - A * oldZ + D;
+                
 
                 string placeCoords = getCoords(worldPos);
+                string placeCoordsWithRos = placeCoords + "\n ROSx: " + newX.ToString() + " RosZ: " + newZ.ToString();
                 //string vectorAngleInfo = getVectorAngle();
-                DisplayUI.Instance.SetText(placeCoords);
+                DisplayUI.Instance.SetText(placeCoordsWithRos);
                 break;
             case ControlState.Nudge:  
                 Vector3 newPosition = AnchorAxis.transform.position;
                 switch (nudgeState)
                 {
                     case NudgeState.Back:
-                        newPosition.x -= deltaAnchorPos;
-                        AnchorAxis.transform.position = newPosition;
-                        break;
-                    case NudgeState.Forward:
-                        newPosition.x += deltaAnchorPos;
-                        AnchorAxis.transform.position = newPosition;
-                        break;
-                    case NudgeState.Left:
                         newPosition.z -= deltaAnchorPos;
                         AnchorAxis.transform.position = newPosition;
                         break;
-                    case NudgeState.Right:
+                    case NudgeState.Forward:
                         newPosition.z += deltaAnchorPos;
+                        AnchorAxis.transform.position = newPosition;
+                        break;
+                    case NudgeState.Left:
+                        newPosition.x -= deltaAnchorPos;
+                        AnchorAxis.transform.position = newPosition;
+                        break;
+                    case NudgeState.Right:
+                        newPosition.x += deltaAnchorPos;
                         AnchorAxis.transform.position = newPosition;
                         break;
                     case NudgeState.Down:
@@ -176,7 +191,8 @@ public class AnchorControl : MonoBehaviour
     public void PlaceAnchor()
     {
         //possibly refactor this if we have too many states?
-        if (currentState != ControlState.Ready && currentState != ControlState.Stop)
+        if (currentState != ControlState.Ready && currentState != ControlState.Stop
+            && currentState != ControlState.ShowCoordinates)
         {
             ttsMgr.SpeakText("AnchorStore Not Ready");
             return;
