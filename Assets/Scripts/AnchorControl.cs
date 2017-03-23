@@ -120,7 +120,8 @@ public class AnchorControl : MonoBehaviour
                     Quaternion toQuat = Camera.main.transform.localRotation;
                     toQuat.x = 0;
                     toQuat.z = 0;
-                    AnchorAxis.transform.rotation = toQuat;
+                    //changed to local rotation, see what this will do:
+                    AnchorAxis.transform.localRotation = toQuat;
                 }
                 break;
             case ControlState.ShowCoordinates:
@@ -134,32 +135,32 @@ public class AnchorControl : MonoBehaviour
                 DisplayUI.Instance.SetText(placeCoords);
                 break;
             case ControlState.Nudge:  
-                Vector3 newPosition = PlacementObject.transform.position;
+                Vector3 newPosition = AnchorAxis.transform.position;
                 switch (nudgeState)
                 {
                     case NudgeState.Back:
                         newPosition.x -= deltaAnchorPos;
-                        PlacementObject.transform.position = newPosition;
+                        AnchorAxis.transform.position = newPosition;
                         break;
                     case NudgeState.Forward:
                         newPosition.x += deltaAnchorPos;
-                        PlacementObject.transform.position = newPosition;
+                        AnchorAxis.transform.position = newPosition;
                         break;
                     case NudgeState.Left:
                         newPosition.z -= deltaAnchorPos;
-                        PlacementObject.transform.position = newPosition;
+                        AnchorAxis.transform.position = newPosition;
                         break;
                     case NudgeState.Right:
                         newPosition.z += deltaAnchorPos;
-                        PlacementObject.transform.position = newPosition;
+                        AnchorAxis.transform.position = newPosition;
                         break;
                     case NudgeState.Down:
                         newPosition.y -= deltaAnchorPos;
-                        PlacementObject.transform.position = newPosition;
+                        AnchorAxis.transform.position = newPosition;
                         break;
                     case NudgeState.Up:
                         newPosition.y += deltaAnchorPos;
-                        PlacementObject.transform.position = newPosition;
+                        AnchorAxis.transform.position = newPosition;
                         break;
                     case NudgeState.RotateRight:
                         //AnchorAxis.transform.Rotate(anchorRotationSpeed * Vector3.up * Time.deltaTime, Space.Self);
@@ -197,6 +198,13 @@ public class AnchorControl : MonoBehaviour
 
     public void Restart()
     {
+        //ttsMgr.SpeakText("Restarting World");
+
+        //while (ttsMgr.audioSource.isPlaying)
+        //{
+        //    Debug.Log("waiting for text to finish");
+        //}
+
         SceneManager.LoadScene("AnchorSharing");
     }
 
@@ -212,7 +220,9 @@ public class AnchorControl : MonoBehaviour
         // Add world anchor when object placement is done.
         anchorManager.AttachAnchor(AnchorAxis, SavedAnchorFriendlyName);
         currentState = ControlState.Ready;
-        ttsMgr.SpeakText("Anchor Placed");
+
+        //ttsMgr.SpeakText("Anchor Placed");
+        SceneManager.LoadScene("AnchorSharing");
     }
 
     public void ShowCoordinates()

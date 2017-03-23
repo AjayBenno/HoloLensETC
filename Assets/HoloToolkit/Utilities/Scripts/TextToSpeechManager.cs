@@ -55,7 +55,7 @@ namespace HoloToolkit.Unity
         // Inspector Variables
         [Tooltip("The audio source where speech will be played.")]
         [SerializeField]
-        private AudioSource audioSource;
+        public AudioSource audioSource;
 
         [Tooltip("The voice that will be used to generate speech.")]
         [SerializeField]
