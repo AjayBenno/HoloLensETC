@@ -157,7 +157,7 @@ public class AnchorControl : MonoBehaviour
                 //string placeCoordsWithRos = placeCoords + "\n ROSx: " + newX.ToString() + " RosZ: " + newZ.ToString();
                 string placeCoordsWithRos = placeCoords + "\n ROSx: " + newX.ToString() + " RosZ: " + newZ.ToString();
                 //string vectorAngleInfo = getVectorAngle();
-                DisplayUI.Instance.SetText(placeCoordsWithRos);
+                //DisplayUI.Instance.SetText(placeCoordsWithRos);
                 break;
             case ControlState.Nudge:  
                 Vector3 newPosition = AnchorAxis.transform.position;
